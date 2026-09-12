@@ -1,0 +1,12 @@
+{
+  "background_color": "#ff8a8a",
+  "dir": "ltr",
+  "display": "standalone",
+  "name": "\"Puzzle Pro Gold",
+  "orientation": "any",
+  "scope": "/",
+  "short_name": "\"Puzzle Pro Gold",
+  "start_url": "/",
+  "theme_color": "#ffffff",
+  "description": "A mobile puzzle game with progressive difficulty across multiple levels\""
+}
