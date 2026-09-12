@@ -8,5 +8,8 @@
   "short_name": "Puzzle Pro Gold",
   "start_url": "/",
   "theme_color": "#ffffff",
-  "description": "A mobile puzzle game with progressive difficulty across multiple levels"
+  "description": "A mobile puzzle game with progressive difficulty across multiple levels",
+  "categories": [
+    "games"
+  ]
 }
