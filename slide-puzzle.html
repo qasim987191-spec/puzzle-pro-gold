@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <title>स्लाइड पज़ल</title>
+    <style>
+        body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; background-color: #f0f0f0; }
+        h1 { margin-bottom: 10px; }
+        #puzzle-grid { display: grid; grid-template-columns: repeat(3, 100px); grid-template-rows: repeat(3, 100px); gap: 5px; background-color: #333; padding: 5px; border-radius: 5px; }
+        .tile { width: 100px; height: 100px; background-color: #3498db; color: white; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: bold; cursor: pointer; border-radius: 3px; user-select: none; }
+        .empty { background-color: transparent; cursor: default; }
+        #win-message { display: none; font-size: 24px; font-weight: bold; color: green; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>स्लाइड पज़ल</h1>
+    <div id="puzzle-grid"></div>
+    <div id="win-message">बधाई हो, आपने पज़ल हल कर लिया!</div>
+    <script>
+        const grid = document.getElementById('puzzle-grid');
+        const winMessage = document.getElementById('win-message');
+        let tiles = [1, 2, 3, 4, 5, 6, 7, 8, ''];
+        function shuffle() {
+            for (let i = tiles.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [tiles[i], tiles[j]] = [tiles[j], tiles[i]];
+            }
+        }
+        function render() {
+            grid.innerHTML = '';
+            tiles.forEach((tile, index) => {
+                const tileDiv = document.createElement('div');
+                tileDiv.classList.add('tile');
+                if (tile === '') {
+                    tileDiv.classList.add('empty');
+                } else {
+                    tileDiv.innerText = tile;
+                    tileDiv.addEventListener('click', () => moveTile(index));
+                }
+                grid.appendChild(tileDiv);
+            });
+        }
+        function moveTile(index) {
+            const emptyIndex = tiles.indexOf('');
+            const validMoves = [
+                index - 1, index + 1, index - 3, index + 3
+            ];
+            if (validMoves.includes(emptyIndex)) {
+                if (index % 3 === 0 && emptyIndex === index - 1) return;
+                if (index % 3 === 2 && emptyIndex === index + 1) return;
+                [tiles[index], tiles[emptyIndex]] = [tiles[emptyIndex], tiles[index]];
+                render();
+                checkWin();
+            }
+        }
+        function checkWin() {
+            const winState = [1, 2, 3, 4, 5, 6, 7, 8, ''];
+            if (JSON.stringify(tiles) === JSON.stringify(winState)) {
+                winMessage.style.display = 'block';
+                document.querySelectorAll('.tile').forEach(t => t.style.pointerEvents = 'none');
+            }
+        }
+        shuffle();
+        render();
+    </script>
+</body>
+</html>
