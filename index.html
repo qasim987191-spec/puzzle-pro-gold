@@ -595,6 +595,29 @@ in
         .then((reg) => console.log('Service worker registered:', reg))
         .catch((err) => console.log('Service worker registration failed:', err));
     });
-  }
+  }const wordsToFind = ["PUZZLE", "GOLD", "WEB", "CODE", "GAME"];
+const grid = [
+  ['P', 'U', 'Z', 'Z', 'L', 'E'],
+  ['G', 'O', 'L', 'D', 'W', 'E'],
+  ['B', 'E', 'B', 'N', 'A', 'M'],
+  ['C', 'O', 'D', 'E', 'G', 'A'],
+  ['G', 'A', 'M', 'E', 'G', 'D'],
+  ['A', 'H', 'T', 'M', 'L', 'C']
+];
+
+function createBoard() {
+  const board = document.getElementById('word-search');
+  board.innerHTML = '';
+  grid.forEach((row) => {
+    row.forEach((letter) => {
+      const tile = document.createElement('div');
+      tile.className = 'tile';
+      tile.textContent = letter;
+      board.appendChild(tile);
+    });
+  });
+}
+createBoard();
+    
 </script>
 <div id="word-search"></div>
