@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <title>पैटर्न मैच पज़ल</title>
+    <style>
+        body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; background-color: #fce4ec; }
+        h1 { margin-bottom: 5px; }
+        p { margin-top: 5px; margin-bottom: 20px; color: #555; }
+        .grid-container { display: flex; gap: 40px; align-items: center; }
+        .grid { display: grid; grid-template-columns: repeat(3, 80px); grid-template-rows: repeat(3, 80px); gap: 5px; background-color: #d81b60; padding: 5px; border-radius: 5px; }
+        .tile { width: 80px; height: 80px; background-color: #ff80ab; border-radius: 3px; cursor: pointer; }
+        .tile.active { background-color: #880e4f; }
+        .grid.target .tile { cursor: default; }
+        #win-message { display: none; font-size: 24px; font-weight: bold; color: #00796b; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>पैटर्न मैच पज़ल</h1>
+    <p>लक्ष्य पैटर्न से मेल खाएं</p>
+    <div class="grid-container">
+        <div>
+            <h3>लक्ष्य पैटर्न:</h3>
+            <div id="target-grid" class="grid target"></div>
+        </div>
+        <div>
+            <h3>आपकी ग्रिड:</h3>
+            <div id="player-grid" class="grid"></div>
+        </div>
+    </div>
+    <div id="win-message">बधाई हो, आपने पैटर्न मैच कर लिया!</div>
+    <script>
+        const targetGrid = document.getElementById('target-grid');
+        const playerGrid = document.getElementById('player-grid');
+        const winMessage = document.getElementById('win-message');
+        const gridSize = 9;
+        let targetPattern = Array(gridSize).fill(false);
+        let playerPattern = Array(gridSize).fill(false);
+        function generateTargetPattern() {
+            const activeCount = Math.floor(Math.random() * 4) + 3;
+            let indices = Array.from(Array(gridSize).keys());
+            indices.sort(() => Math.random() - 0.5);
+            targetPattern = Array(gridSize).fill(false);
+            for (let i = 0; i < activeCount; i++) {
+                targetPattern[indices[i]] = true;
+            }
+        }
+        function renderGrids() {
+            targetGrid.innerHTML = '';
+            playerGrid.innerHTML = '';
+            for (let i = 0; i < gridSize; i++) {
+                const targetTile = document.createElement('div');
+                targetTile.classList.add('tile');
+                if (targetPattern[i]) targetTile.classList.add('active');
+                targetGrid.appendChild(targetTile);
+                const playerTile = document.createElement('div');
+                playerTile.classList.add('tile');
+                if (playerPattern[i]) playerTile.classList.add('active');
+                playerTile.addEventListener('click', () => toggleTile(i));
+                playerGrid.appendChild(playerTile);
+            }
+        }
+        function toggleTile(index) {
+            playerPattern[index] = !playerPattern[index];
+            renderGrids();
+            checkWin();
+        }
+        function checkWin() {
+            if (JSON.stringify(playerPattern) === JSON.stringify(targetPattern)) {
+                winMessage.style.display = 'block';
+                document.querySelectorAll('#player-grid .tile').forEach(t => t.style.pointerEvents = 'none');
+            }
+        }
+        generateTargetPattern();
+        renderGrids();
+    </script>
+</body>
+</html>
